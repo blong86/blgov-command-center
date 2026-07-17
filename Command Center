@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BL Gov CC">
+<meta name="theme-color" content="#012D6C">
+<title>BL Gov Command Center</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blnav:#012D6C;--blgrn:#00956E;
+  --blnav-lt:#E6ECF8;--blgrn-lt:#E0F5EF;
+  --blnav-dk:#001A45;--blgrn-dk:#005C43;
+  --surface-0:#F5F5F5;--surface-1:#EFEFEF;--surface-2:#FFFFFF;
+  --text-primary:#1A1A1A;--text-secondary:#666666;
+  --border:rgba(0,0,0,0.12);--radius:8px;
+  --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+}
+body{background:var(--surface-0);font-family:var(--font-sans);min-height:100vh;padding:12px}
+.app{max-width:420px;margin:0 auto;padding-bottom:20px}
+.hdr{background:#012D6C;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.hdr-logo{width:46px;height:46px;border-radius:8px;background:#fff;padding:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr-logo img{width:40px;height:40px;object-fit:contain}
+.hdr-t h1{font-size:14px;font-weight:500;color:#fff}
+.hdr-t p{font-size:11px;color:rgba(255,255,255,.65)}
+.tabs{display:flex;gap:3px;margin-bottom:14px;background:var(--surface-1);border-radius:var(--radius);padding:3px}
+.tab{flex:1;padding:6px 2px;font-size:11px;border:none;background:transparent;color:var(--text-secondary);border-radius:6px;cursor:pointer;font-family:var(--font-sans);display:flex;align-items:center;justify-content:center;gap:3px}
+.tab.active{background:#012D6C;color:#fff;font-weight:500}
+.sec{display:none}.sec.active{display:block}
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;padding:11px 12px;margin-bottom:8px}
+.ch{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;color:#fff}
+.n{background:#012D6C}.g{background:#00956E}.g2{background:#1D9E75}.g3{background:#0F6E56}.bv{background:#185FA5}
+.nm{font-size:13px;font-weight:500;color:var(--text-primary)}
+.rl{font-size:11px;color:var(--text-secondary)}
+.sp{font-size:10px;padding:2px 7px;border-radius:20px;margin-left:auto;white-space:nowrap;font-weight:500}
+.sa{background:#E6ECF8;color:#012D6C}.ss{background:#E0F5EF;color:#005C43}
+.sr{background:#FFF8E0;color:#7A5500}.sc{background:var(--surface-1);color:var(--text-secondary)}.sw{background:#FCE4D6;color:#993C1D}
+.dv2{height:0.5px;background:var(--border);margin:7px 0}
+.dr{display:flex;justify-content:space-between;font-size:11px;padding:2px 0}
+.dl{color:var(--text-secondary)}.dv{color:var(--text-primary);text-align:right;max-width:60%}
+.bdg{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.bx{font-size:10px;padding:2px 7px;border-radius:20px;border:0.5px solid}
+.bn{background:#E6ECF8;color:#001A45;border-color:#8FAAD4}
+.bg{background:#E0F5EF;color:#005C43;border-color:#5DCAA5}
+.bx3{background:var(--surface-1);color:var(--text-secondary);border-color:var(--border)}
+.sl{font-size:10px;font-weight:500;color:#00956E;text-transform:uppercase;letter-spacing:.06em;margin:14px 0 7px;display:flex;align-items:center;gap:6px}
+.sl::after{content:"";flex:1;height:0.5px;background:#E0F5EF}
+.chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:12px}
+.chip{background:var(--surface-1);border:0.5px solid var(--border);border-radius:var(--radius);padding:7px 6px;text-align:center}
+.cn{font-size:18px;font-weight:500;color:var(--text-primary)}.cl{font-size:10px;color:var(--text-secondary);margin-top:1px}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:9px;border:0.5px dashed #00956E;border-radius:12px;background:transparent;color:#00956E;font-size:12px;cursor:pointer;font-family:var(--font-sans);margin-bottom:10px}
+.add-btn:hover{background:#E0F5EF}
+.mw{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px;z-index:100}
+.mw.open{display:flex}
+.modal{background:var(--surface-2);border-radius:14px;border:0.5px solid var(--border);padding:16px;width:100%;max-width:380px;max-height:90vh;overflow-y:auto}
+.modal h3{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:12px;padding-bottom:8px;border-bottom:0.5px solid var(--border)}
+.fl{display:flex;flex-direction:column;gap:8px}
+.fl label{font-size:11px;color:var(--text-secondary)}
+.fl input,.fl select,.fl textarea{width:100%;padding:7px 10px;border-radius:var(--radius);border:0.5px solid var(--border);background:var(--surface-1);color:var(--text-primary);font-size:12px;font-family:var(--font-sans)}
+.fl textarea{resize:vertical;min-height:52px}
+.mb2{display:flex;gap:8px;margin-top:8px}
+.mb2 button{flex:1;padding:8px;border-radius:var(--radius);border:0.5px solid var(--border);font-size:12px;cursor:pointer;font-family:var(--font-sans)}
+.sav{background:#012D6C;color:#fff;border-color:#012D6C}
+.can{background:transparent;color:var(--text-secondary)}
+.cl-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:0.5px solid var(--border)}
+.cl-row:last-child{border-bottom:none}
+.cli{flex:1;min-width:0}
+.cn2{font-size:12px;font-weight:500;color:var(--text-primary)}
+.cs{font-size:11px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cl2{font-size:10px;padding:2px 6px;border-radius:20px;background:#E6ECF8;color:#001A45;border:0.5px solid #8FAAD4;white-space:nowrap}
+.ni{background:var(--surface-2);border:0.5px solid var(--border);border-left:3px solid #00956E;border-radius:0 12px 12px 0;padding:9px 11px;margin-bottom:7px}
+.nt{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:4px;line-height:1.4}
+.nm2{display:flex;justify-content:space-between;align-items:center;margin-top:5px}
+.ntg{font-size:10px;padding:2px 6px;border-radius:20px;background:#E6ECF8;color:#012D6C;border:0.5px solid #8FAAD4}
+.nla{font-size:10px;color:#00956E;text-decoration:none}
+.rfb{display:flex;align-items:center;gap:5px;font-size:11px;color:#00956E;background:#E0F5EF;border:0.5px solid #00956E;border-radius:var(--radius);padding:6px 12px;cursor:pointer;font-family:var(--font-sans);margin-bottom:12px;border-radius:8px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hdr">
+    <div class="hdr-logo"><img src="data:image/png;base64,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" alt="BL Government Solutions logo"></div>
+    <div class="hdr-t"><h1>BL Gov Command Center</h1><p>Your right hand in business development</p></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('pipeline',this)"><i class="ti ti-chart-bar"></i> Pipeline</button>
+    <button class="tab" onclick="showTab('team',this)"><i class="ti ti-users"></i> Team</button>
+    <button class="tab" onclick="showTab('clients',this)"><i class="ti ti-briefcase"></i> Clients</button>
+    <button class="tab" onclick="showTab('intel',this)"><i class="ti ti-news"></i> Intel</button>
+  </div>
+
+  <div id="pipeline" class="sec active">
+    <div class="chips">
+      <div class="chip"><div class="cn" id="tot">11</div><div class="cl">Total</div></div>
+      <div class="chip"><div class="cn" style="color:#012D6C" id="act-c">7</div><div class="cl">Active</div></div>
+      <div class="chip"><div class="cn" style="color:#005C43" id="sgn-c">1</div><div class="cl">Signed</div></div>
+      <div class="chip"><div class="cn" style="color:#7A5500" id="re-c">2</div><div class="cl">Re-engage</div></div>
+    </div>
+    <button class="add-btn" onclick="document.getElementById('addModal').classList.add('open')">
+      <i class="ti ti-plus"></i> Add prospect
+    </button>
+    <div id="prospect-list"></div>
+    <div class="mw" id="addModal">
+      <div class="modal">
+        <h3>Add prospect</h3>
+        <div class="fl">
+          <div><label>Company name</label><input type="text" id="f-co" placeholder="Acme Corp"></div>
+          <div><label>POC name</label><input type="text" id="f-poc" placeholder="Jane Smith"></div>
+          <div><label>Lead source</label><input type="text" id="f-src" placeholder="RSM Federal, VETS26..."></div>
+          <div><label>Industry / focus</label><input type="text" id="f-ind" placeholder="Cybersecurity, Logistics..."></div>
+          <div><label>Status</label><select id="f-st"><option>Active</option><option>New Lead</option><option>Re-engage</option><option>Signed</option><option>Cold</option></select></div>
+          <div><label>Internal lead</label><select id="f-ld"><option>Brian</option><option>Christian</option><option>Joe C</option><option>Brad</option><option>Matt</option><option>Dana</option><option>Jared</option></select></div>
+          <div><label>Next meeting</label><input type="text" id="f-mt" placeholder="Jul 21, 2026"></div>
+          <div><label>Notes</label><textarea id="f-nt" placeholder="Next steps..."></textarea></div>
+        </div>
+        <div class="mb2">
+          <button class="can" onclick="document.getElementById('addModal').classList.remove('open')">Cancel</button>
+          <button class="sav" onclick="addProspect()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="team" class="sec">
+    <div class="sl">Leadership</div>
+    <div class="card"><div class="ch"><div class="av n">BL</div><div><div class="nm">Brian Long</div><div class="rl">CEO · Hampton Roads VA</div></div></div><div class="bdg"><span class="bx bn">RSM Federal Coach</span><span class="bx bg">FedWin Academy</span><span class="bx bx3">20+ yrs GovCon</span></div></div>
+    <div class="sl">BD Leads</div>
+    <div class="card"><div class="ch"><div class="av g">C</div><div><div class="nm">Christian</div><div class="rl">BD Lead · Charleston SC</div></div></div><div class="dv2"></div><div class="dr"><span class="dl">Clients</span><span class="dv">HPG · Tidewater · Summit · NanTrak</span></div><div class="bdg"><span class="bx bx3">Blue collar / Trade</span><span class="bx bn">Charleston</span></div></div>
+    <div class="card"><div class="ch"><div class="av g2">JC</div><div><div class="nm">Joe C</div><div class="rl">BD Lead</div></div></div><div class="dv2"></div><div class="dr"><span class="dl">Clients</span><span class="dv">Alico Cyber</span></div><div class="bdg"><span class="bx bx3">Business Development</span></div></div>
+    <div class="card"><div class="ch"><div class="av bv">B</div><div><div class="nm">Brad</div><div class="rl">BD Lead · Hampton Roads VA</div></div></div><div class="dv2"></div><div class="dr"><span class="dl">Clients</span><span class="dv">Peregrine · Chenega · MEE · Macro Air</span></div><div class="bdg"><span class="bx bn">OTA Expert</span><span class="bx bg">SBIR / STTR Lead</span></div></div>
+    <div class="card"><div class="ch"><div class="av n">JK</div><div><div class="nm">Jared Kohl</div><div class="rl">BD Lead · Products / Rotary Wing</div></div></div><div class="bdg"><span class="bx bx3">Products Specialist</span><span class="bx bx3">Rotary Wing</span></div></div>
+    <div class="sl">Capture Leads</div>
+    <div class="card"><div class="ch"><div class="av n">M</div><div><div class="nm">Matt</div><div class="rl">Capture Lead · DC / Baltimore</div></div></div><div class="dv2"></div><div class="dr"><span class="dl">Clients</span><span class="dv">ProLog · Flashpoint · Ocient · Kinaras</span></div><div class="bdg"><span class="bx bn">Army / DoD</span><span class="bx bx3">IC / Cyber</span></div></div>
+    <div class="card"><div class="ch"><div class="av g">D</div><div><div class="nm">Dana</div><div class="rl">Capture Lead · Huntsville AL</div></div></div><div class="dv2"></div><div class="dr"><span class="dl">Clients</span><span class="dv">ProLog · LVS · SCG</span></div><div class="bdg"><span class="bx bn">GSA Specialist</span><span class="bx bx3">AMCOM / Army</span></div></div>
+    <div class="card"><div class="ch"><div class="av g3">JH</div><div><div class="nm">Jaheme</div><div class="rl">Capture Lead</div></div></div><div class="bdg"><span class="bx bx3">Capture Management</span></div></div>
+    <div class="card"><div class="ch"><div class="av bv">T</div><div><div class="nm">Tino</div><div class="rl">Capture Lead</div></div></div><div class="bdg"><span class="bx bx3">Capture Management</span></div></div>
+    <div class="sl">BD Analysts</div>
+    <div class="card"><div class="ch"><div class="av g2">G</div><div><div class="nm">George</div><div class="rl">BD Analyst · GovWin Specialist</div></div></div><div class="bdg"><span class="bx bg">GovWin Expert</span><span class="bx bx3">Opportunity Research</span></div></div>
+    <div class="card"><div class="ch"><div class="av n">JH</div><div><div class="nm">Joe H</div><div class="rl">BD Analyst</div></div></div><div class="bdg"><span class="bx bx3">BD Research</span></div></div>
+    <div class="card"><div class="ch"><div class="av g">M</div><div><div class="nm">Mohammed</div><div class="rl">BD Analyst</div></div></div><div class="bdg"><span class="bx bx3">BD Research</span></div></div>
+    <div class="card"><div class="ch"><div class="av g3">J</div><div><div class="nm">Jules</div><div class="rl">BD Analyst</div></div></div><div class="bdg"><span class="bx bx3">SAM.gov Research</span><span class="bx bx3">Opportunity Briefs</span></div></div>
+    <div class="card"><div class="ch"><div class="av bv">O</div><div><div class="nm">Olivia</div><div class="rl">Admin Assistant</div></div></div><div class="bdg"><span class="bx bx3">Administrative Support</span></div></div>
+  </div>
+
+  <div id="clients" class="sec">
+    <div class="sl">Brian's clients</div>
+    <div class="card" style="padding:6px 12px">
+      <div class="cl-row"><div class="av n" style="width:28px;height:28px;font-size:10px">FP</div><div class="cli"><div class="cn2">Flashpoint</div><div class="cs">Cyber threat intel · IC / DoD</div></div><span class="cl2">Matt</span></div>
+      <div class="cl-row"><div class="av g" style="width:28px;height:28px;font-size:10px">PL</div><div class="cli"><div class="cn2">ProLog</div><div class="cs">Logistics · Supply chain · Army</div></div><span class="cl2">Matt · Dana</span></div>
+      <div class="cl-row"><div class="av g2" style="width:28px;height:28px;font-size:10px">PS</div><div class="cli"><div class="cn2">ProLog (SSAS)</div><div class="cs">Special systems support</div></div><span class="cl2">Matt · Dana</span></div>
+      <div class="cl-row"><div class="av g3" style="width:28px;height:28px;font-size:10px">EI</div><div class="cli"><div class="cn2">Endurance IT</div><div class="cs">IT staffing · Virginia</div></div><span class="cl2">Matt</span></div>
+      <div class="cl-row"><div class="av bv" style="width:28px;height:28px;font-size:10px">KS</div><div class="cli"><div class="cn2">Kinaras Solutions</div><div class="cs">Cloud / IT / VA · SDVOSB 8(a)</div></div><span class="cl2">Matt</span></div>
+      <div class="cl-row"><div class="av n" style="width:28px;height:28px;font-size:10px">AL</div><div class="cli"><div class="cn2">Alico Cyber</div><div class="cs">Cyber security · DoD / Federal</div></div><span class="cl2">Joe C</span></div>
+      <div class="cl-row"><div class="av g" style="width:28px;height:28px;font-size:10px">OC</div><div class="cli"><div class="cn2">OCIENT</div><div class="cs">AI / Data analytics · IC</div></div><span class="cl2">Matt</span></div>
+      <div class="cl-row"><div class="av g2" style="width:28px;height:28px;font-size:10px">AG</div><div class="cli"><div class="cn2">Agape Travel</div><div class="cs">Charter bus · Transportation · VA</div></div><span class="cl2">Jules</span></div>
+      <div class="cl-row"><div class="av g3" style="width:28px;height:28px;font-size:10px">JG</div><div class="cli"><div class="cn2">JI Garcia</div><div class="cs">RSM Federal engagement</div></div><span class="cl2">Brian</span></div>
+      <div class="cl-row" style="border-bottom:none"><div class="av bv" style="width:28px;height:28px;font-size:10px">SC</div><div class="cli"><div class="cn2">Schneider Eye</div><div class="cs">Healthcare / MedSpa · Suffolk VA</div></div><span class="cl2">Brian</span></div>
+    </div>
+    <div class="sl">Brad's clients</div>
+    <div class="card" style="padding:6px 12px">
+      <div class="cl-row"><div class="av n" style="width:28px;height:28px;font-size:10px">PE</div><div class="cli"><div class="cn2">Peregrine</div><div class="cs">Non-traditional vehicles</div></div><span class="cl2">Brad</span></div>
+      <div class="cl-row"><div class="av g" style="width:28px;height:28px;font-size:10px">CH</div><div class="cli"><div class="cn2">Chenega</div><div class="cs">ANC · DoD / Federal</div></div><span class="cl2">Brad</span></div>
+      <div class="cl-row"><div class="av g2" style="width:28px;height:28px;font-size:10px">ME</div><div class="cli"><div class="cn2">MEE</div><div class="cs">Government services</div></div><span class="cl2">Brad</span></div>
+      <div class="cl-row" style="border-bottom:none"><div class="av g3" style="width:28px;height:28px;font-size:10px">MA</div><div class="cli"><div class="cn2">Macro Air</div><div class="cs">Industrial / Federal</div></div><span class="cl2">Brad</span></div>
+    </div>
+    <div class="sl">Christian's clients</div>
+    <div class="card" style="padding:6px 12px">
+      <div class="cl-row"><div class="av g" style="width:28px;height:28px;font-size:10px">HP</div><div class="cli"><div class="cn2">HPG</div><div class="cs">Government services</div></div><span class="cl2">Christian</span></div>
+      <div class="cl-row"><div class="av n" style="width:28px;height:28px;font-size:10px">TT</div><div class="cli"><div class="cn2">Tidewater Tactical</div><div class="cs">Tactical equipment · DoD / DHS</div></div><span class="cl2">Christian</span></div>
+      <div class="cl-row"><div class="av g2" style="width:28px;height:28px;font-size:10px">SE</div><div class="cli"><div class="cn2">Summit Environmental</div><div class="cs">Roofing · Pest control · SLED</div></div><span class="cl2">Christian</span></div>
+      <div class="cl-row" style="border-bottom:none"><div class="av g3" style="width:28px;height:28px;font-size:10px">NT</div><div class="cli"><div class="cn2">NanTrak Tactical</div><div class="cs">Tracking devices · SBIR · DoD</div></div><span class="cl2">Christian</span></div>
+    </div>
+  </div>
+
+  <div id="intel" class="sec">
+    <button class="rfb" onclick="window.open('https://www.google.com/search?q=GovCon+news+today','_blank')">
+      <i class="ti ti-refresh"></i> Search latest GovCon intel
+    </button>
+    <div class="sl">Latest GovCon intel</div>
+    <div class="ni"><div class="nt">DoW suspends CMMC Phase 2 — RFI responses due Aug 14th</div><div class="nm2"><span class="ntg">Kinaras · Flashpoint · Matt</span><a class="nla" href="https://www.pilieromazza.com" target="_blank">Read</a></div></div>
+    <div class="ni"><div class="nt">Fixed price contracts now official default across federal procurement</div><div class="nm2"><span class="ntg">All clients</span><a class="nla" href="https://www.morganlewis.com/blogs/governmentcontractorguidebook/2026/06/fixed-price-contracting-is-becoming-the-default-contractors-should-prepare-now" target="_blank">Read</a></div></div>
+    <div class="ni"><div class="nt">Navy ICE-T $345M cybersecurity task order via SeaPort-NxG — due Jul 30</div><div class="nm2"><span class="ntg">Mayfield CLS · Matt</span><a class="nla" href="https://www.govconwire.com" target="_blank">Read</a></div></div>
+    <div class="ni"><div class="nt">TINA Lite — DoD pricing threshold raised from $2.5M to $10M</div><div class="nm2"><span class="ntg">Brad · ACQ Experts</span><a class="nla" href="https://www.executivegov.com/articles/dow-tina-lite-policy-implementation-guide-release" target="_blank">Read</a></div></div>
+    <div class="ni"><div class="nt">Lockheed Martin $10.5B USSOCOM logistics contract — 12 years</div><div class="nm2"><span class="ntg">ProLog · Matt</span><a class="nla" href="https://www.govconwire.com" target="_blank">Read</a></div></div>
+    <div class="ni"><div class="nt">GSA Polaris WOSB pool — 48 vendors awarded through March 2031</div><div class="nm2"><span class="ntg">Sun Curating · Dana</span><a class="nla" href="https://www.pursuit.us" target="_blank">Read</a></div></div>
+  </div>
+</div>
+
+<script>
+const AVC=['n','g','g2','g3','bv'];
+const SC={Active:'sa',Signed:'ss','Re-engage':'sr',Cold:'sc','New Lead':'sw'};
+function ini(s){return s.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}
+function avc(s){let n=0;for(let c of s)n+=c.charCodeAt(0);return AVC[n%AVC.length]}
+let prospects=[
+  {co:'Mayfield CLS',poc:'Chris Mayfield / Sharon',src:'JT Moore',ind:'Financial Mgmt / Logistics',st:'Active',lead:'Brian',meet:'Jul 16, 2026',notes:'Meeting at Town Center City Club.'},
+  {co:'NanTrak Tactical',poc:'TBD',src:'VETS26 / Direct',ind:'Tracking Devices / SBIR / DoD',st:'New Lead',lead:'Christian',meet:'Mon Jul 21 2PM',notes:'Monday 2PM. Will sign if they like what they hear.'},
+  {co:'Codavyn',poc:'Matt Jones',src:'RSM Federal',ind:'Software Dev / GovCon Entry',st:'Active',lead:'Brian',meet:'Pending',notes:'Calendly call scheduled.'},
+  {co:'ACQ Experts',poc:'Steven Williams',src:'RSM Federal / Josh Frank',ind:'Acquisition Consulting / Rebranding',st:'Active',lead:'Brian',meet:'Aug 1, 2026',notes:'Contract out for signature.'},
+  {co:'Wyoming DeafBlind',poc:'Scott Foor / Chelsea',src:'VETS26',ind:'Nonprofit / Federal BD',st:'Active',lead:'Brian',meet:'TBD',notes:'Inner Circle rec sent. Awaiting CFO review.'},
+  {co:'T.S. Conard',poc:'Eric Samaritoni',src:'RSM Federal',ind:'IT MSP / GovCon Entry',st:'Re-engage',lead:'Brian',meet:'TBD',notes:'Re-engaged post-VETS26.'},
+  {co:'14bis Supply Tracking',poc:'Eleanor Mitch',src:'RSM Federal',ind:'Supply Chain / Aviation',st:'Re-engage',lead:'Brian',meet:'TBD',notes:'Re-engaged Jun 30. Awaiting reply.'},
+  {co:'Sun Curating Group',poc:'Erica Sun',src:'Lynda Stafford',ind:'Healthcare IT / SDVOSB WOSB HUBZone',st:'Active',lead:'Dana',meet:'TBD',notes:'Session 2 complete.'},
+  {co:'Low Voltage Specialties',poc:'Michael Chapman',src:'Lynda Stafford',ind:'Div 27/28 Security Systems / SDVOSB',st:'Active',lead:'Dana',meet:'TBD',notes:'Session 1 complete.'},
+  {co:'10GFS',poc:'R. Bowman',src:'Lynda Stafford',ind:'GovCon Services',st:'Active',lead:'Brian',meet:'TBD',notes:'Session 1 Jul 8.'},
+  {co:'Agape Travel and Tours',poc:'TBD',src:'BL Gov Direct',ind:'Charter Bus / Transportation VA',st:'Active',lead:'Jules',meet:'Next week',notes:'Jules research complete.'},
+];
+function countStatus(){
+  let t=prospects.length,a=0,s=0,r=0;
+  prospects.forEach(p=>{if(p.st==='Active'||p.st==='New Lead')a++;if(p.st==='Signed')s++;if(p.st==='Re-engage')r++;});
+  document.getElementById('tot').textContent=t;
+  document.getElementById('act-c').textContent=a;
+  document.getElementById('sgn-c').textContent=s;
+  document.getElementById('re-c').textContent=r;
+}
+function renderProspects(){
+  document.getElementById('prospect-list').innerHTML=prospects.map(p=>`
+    <div class="card">
+      <div class="ch"><div class="av ${avc(p.co)}">${ini(p.co)}</div><div><div class="nm">${p.co}</div><div class="rl">${p.poc}</div></div><span class="sp ${SC[p.st]||'sc'}">${p.st}</span></div>
+      <div class="dv2"></div>
+      <div class="dr"><span class="dl">Lead source</span><span class="dv">${p.src}</span></div>
+      <div class="dr"><span class="dl">Internal lead</span><span class="dv">${p.lead}</span></div>
+      <div class="dr"><span class="dl">Focus</span><span class="dv">${p.ind}</span></div>
+      <div class="dr"><span class="dl">Next meeting</span><span class="dv">${p.meet}</span></div>
+      ${p.notes?`<div class="dr" style="margin-top:2px"><span class="dl">Notes</span><span class="dv" style="font-size:10px;color:#666">${p.notes}</span></div>`:''}
+    </div>`).join('');
+  countStatus();
+}
+function addProspect(){
+  const co=document.getElementById('f-co').value.trim();
+  if(!co)return;
+  prospects.unshift({co,poc:document.getElementById('f-poc').value||'TBD',src:document.getElementById('f-src').value||'',ind:document.getElementById('f-ind').value||'',st:document.getElementById('f-st').value,lead:document.getElementById('f-ld').value,meet:document.getElementById('f-mt').value||'TBD',notes:document.getElementById('f-nt').value||''});
+  renderProspects();
+  document.getElementById('addModal').classList.remove('open');
+  ['f-co','f-poc','f-src','f-ind','f-mt','f-nt'].forEach(id=>document.getElementById(id).value='');
+}
+function showTab(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+renderProspects();
+</script>
+</body>
+</html>
