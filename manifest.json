@@ -1,7 +1,7 @@
 {
   "name": "BL Gov Command Center",
   "short_name": "BL Gov CC",
-  "start_url": "/BLGov_Command_Center.html",
+  "start_url": "/blgov-command-center/BLGov_Command_Center.html",
   "display": "standalone",
   "background_color": "#012D6C",
   "theme_color": "#012D6C",
