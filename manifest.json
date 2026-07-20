@@ -2,10 +2,13 @@
   "name": "BL Gov Command Center",
   "short_name": "BL Gov CC",
   "start_url": "/blgov-command-center/BLGov_Command_Center.html",
+  "scope": "/blgov-command-center/",
   "display": "standalone",
   "background_color": "#012D6C",
   "theme_color": "#012D6C",
+  "orientation": "portrait-primary",
   "icons": [
-    {"src": "TRANSPARENT-03 cut.png", "sizes": "192x192", "type": "image/png"},
-    ]
+    { "src": "icon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon512.png", "sizes": "512x512", "type": "image/png" }
+  ]
 }
